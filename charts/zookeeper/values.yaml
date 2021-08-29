@@ -1,0 +1,16 @@
+replicaCount: 1
+port: 2181
+
+zookeeper:
+  tickTike: "2000"
+
+image:
+  repository: confluentinc/cp-zookeeper
+  pullPolicy: IfNotPresent
+  tag: "6.2.0"
+
+volume:
+  storageCapacity: 10Gi
+  nfs:
+    path: /root/k8s-storage
+    server: 192.168.0.39

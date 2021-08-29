@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Values.image.tag }}
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }} 
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Chart.Name }}
+  serviceName: {{ template "kafka-headless-service.name" . }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Chart.Name }}
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values: 
+                - {{ .Chart.Name }}
+            topologyKey: "kubernetes.io/hostname"
+      volumes:
+      - name: {{ .Chart.Name }}-volume
+        persistentVolumeClaim:
+          claimName: {{ .Chart.Name }}-volumeclaim
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.externalPort }}
+          name: external
+        - containerPort: {{ .Values.service.internalPort }}
+          name: internal
+        - containerPort: {{ .Values.service.jmxPort }}
+          name: jmx
+        env:
+        - name: BROKER_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: HOST_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: KAFKA_ZOOKEEPER_CONNECT
+          value: {{ template "zookeeper-service.name" . }}
+        - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+          value: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+        - name: KAFKA_ADVERTISED_LISTENERS
+          value: "PLAINTEXT://$(BROKER_ID).{{ template "kafka-headless-service.dns" . }}:{{ .Values.service.internalPort }}, PLAINTEXT_HOST://$(HOST_IP):{{ .Values.service.externalPort }}"
+        - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+          valueFrom: 
+            configMapKeyRef:
+              name: {{ .Chart.Name }}-configMap
+              key: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+        - name: KAFKA_JMX_PORT
+          value: {{ .Values.jmxPort }}
+        - name: KAFKA_JMX_HOSTNAME
+          value: $(BROKER_ID).{{ template "kafka-headless-service.dns" . }}
+        volumeMounts:
+        - mountPath: "/var/lib/kafka/data"
+          name: {{ .Chart.Name }}-volume
+          subPathExpr: $(BROKER_ID)
