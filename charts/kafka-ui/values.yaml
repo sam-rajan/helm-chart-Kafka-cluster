@@ -1,0 +1,11 @@
+replicaCount: 1
+port: 2181
+
+image:
+  repository: kafkamanager/kafka-manager
+  pullPolicy: Always
+  tag: "latest"
+
+service:
+  nodePort: 30080
+  port: 9000

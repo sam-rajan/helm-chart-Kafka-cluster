@@ -1,0 +1,20 @@
+replicaCount: 3
+
+image:
+  repository: confluentinc/cp-kafka
+  pullPolicy: IfNotPresent
+  tag: "6.2.0"
+
+service:
+  internalPort: 9092
+  externalPort: 30092
+  jmxPort: 9101
+
+volume:
+  storageCapacity: 10Gi
+  nfs:
+    path: /root/k8s-storage
+    server: 192.168.0.39
+
+broker:
+  offsetTopicReplicationFactor: "1"

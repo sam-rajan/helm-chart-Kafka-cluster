@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Chart.Name }}-volumeclaim
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ .Chart.Name }}-volumeclaim
+    app.kubernetes.io/part-of: {{ .Release.Name }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: {{ .Values.volume.storageCapacity }}
+  storageClassName: none
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Chart.Name }}-volume
