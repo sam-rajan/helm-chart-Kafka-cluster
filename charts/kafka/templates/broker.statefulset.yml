@@ -62,7 +62,7 @@ spec:
         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
           valueFrom: 
             configMapKeyRef:
-              name: {{ .Chart.Name }}-configMap
+              name: {{ .Chart.Name }}-configmap
               key: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
         - name: KAFKA_JMX_PORT
           value: {{ .Values.jmxPort }}
