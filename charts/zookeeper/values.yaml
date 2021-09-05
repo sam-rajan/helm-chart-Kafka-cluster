@@ -2,7 +2,7 @@ replicaCount: 1
 port: 2181
 
 zookeeper:
-  tickTike: "2000"
+  tickTime: "2000"
 
 image:
   repository: confluentinc/cp-zookeeper

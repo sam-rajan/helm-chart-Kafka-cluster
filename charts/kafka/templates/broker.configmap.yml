@@ -9,4 +9,4 @@ metadata:
     app.kubernetes.io/version: {{ .Values.image.tag }}
     app.kubernetes.io/part-of: {{ .Release.Name }}
 data:
-  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: {{ .Values.broker.offsetTopicReplicationFactor }}
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: {{ .Values.broker.offsetTopicReplicationFactor  | quote }}
