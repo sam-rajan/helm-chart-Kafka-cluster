@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: {{ .Release.Name }}
 spec:
   type: NodePort
+  externalTrafficPolicy: Local
   selector:
     app.kubernetes.io/name: {{ .Chart.Name }}
   ports:
@@ -15,5 +16,4 @@ spec:
       port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.externalPort }}
       nodePort: {{ .Values.service.externalPort }}
-  topologyKeys:
-    - "kubernetes.io/hostname"
+      
