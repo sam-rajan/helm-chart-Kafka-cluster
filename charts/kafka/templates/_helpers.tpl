@@ -8,7 +8,7 @@
 {{- printf "%s.%s.%s" $dns .Release.Namespace "svc.cluster.local" -}}
 {{- end -}}
 
-{{- define "zookeeper-service.name" -}}
-{{- $name := "kafka-zookeeper-svc.%s.svc.cluster.local" -}}
-{{- printf $name .Release.Namespace -}}
+{{- define "kafka-zookeeper-connect" -}}
+{{- $name := "%s-svc.%s.svc.cluster.local" -}}
+{{- printf $name .Values.kafkaZookeeper.name .Release.Namespace -}}
 {{- end -}}

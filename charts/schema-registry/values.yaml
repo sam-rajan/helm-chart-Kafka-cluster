@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: confluentinc/cp-schema-registry
+  pullPolicy: IfNotPresent
+  tag: "6.2.0"
+
+
+service:
+  internalPort: 8081
+  externalPort: 30081

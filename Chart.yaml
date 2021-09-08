@@ -12,6 +12,9 @@ dependencies:
   - name: kafka-broker
     version: 0.1.0
     repository: file://./charts/kafka
+  - name: kafka-schema-registry
+    version: 0.1.0
+    repository: file://./charts/schema-registry
   - name: kafka-gui
     version: 0.1.0
     repository: file://./charts/kafka-ui
