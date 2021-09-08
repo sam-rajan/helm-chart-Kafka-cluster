@@ -19,19 +19,14 @@ This repository provides Helm charts for following services:
 * ZooKeeper
 * Kafka brokers
 * Kafka web based UI (Yahoo CMAK) -- optional
+* Schema Registry
 * Kafka Connect (adding soon)
-* Schema Registry (adding soon)
 * REST Proxy (adding soon)
 
 ### Install Helm on Kubernetes
 
 Follow the directions to [install and deploy Helm](https://docs.helm.sh/using_helm/#quickstart-guide) to the Kubernetes cluster.
 
-```bash
-$ helm init
-$ helm repo update
-$ helm list
-```
 ### How to deploy Kafka Cluster
 
 Clone this repo,
@@ -58,6 +53,5 @@ Feel free to fix the issues if you find any and add improvements as well. Don't 
 ## Road map
 
  - Kafka Connect
- - Schema Registry
  - REST Proxy
  

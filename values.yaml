@@ -1,2 +1,13 @@
 kafka-gui:
   enabled: true
+
+kafka-broker:
+  kafkaZookeeper:
+    name: "kafka-zookeeper"
+    
+kafka-schema-registry:
+  kafkaBroker:
+    name: "kafka-broker"  
+    port: 9092
+
+
